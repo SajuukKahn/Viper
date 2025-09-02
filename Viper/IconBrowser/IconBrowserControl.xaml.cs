@@ -9,21 +9,18 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using Microsoft.VisualStudio.Threading;
     using Microsoft.VisualStudio.Shell;
-    using System.Data.SqlTypes;
+    using System.Windows.Media;
 
     /// <summary>
     /// Interaction logic for IconBrowserControl.xaml
     /// </summary>
     public partial class IconBrowserControl : UserControl
     {
-        private static Lazy<IconBrowserControl> _instance = new Lazy<IconBrowserControl>(() => new IconBrowserControl());
+        private readonly FileSystemWatcher _watcher;
+        private readonly string _iconsXamlPath;
         private List<IconItem> _allIcons = new List<IconItem>();
-        private string _iconsXamlPath;
-        private FileSystemWatcher _watcher;
 
-        public static IconBrowserControl Instance => _instance.Value;
         private DateTime _lastRead = DateTime.MinValue;
 
         public IconBrowserControl()
@@ -100,10 +97,10 @@
                 .Select(e => new IconItem(e.Attribute(xns + "Key")?.Value ?? "", e.Value.Trim())));
         }
 
-        private void SearchBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string filter = SearchBox.Text.Trim();
-            IconList.ItemsSource = string.IsNullOrEmpty(filter) ? _allIcons : new List<IconItem>(_allIcons.Where(i => i.lowerCaseKey.Contains(filter)));
+            IconList.ItemsSource = string.IsNullOrEmpty(filter) ? _allIcons : new List<IconItem>(_allIcons.Where(i => i.Key.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0));
         }
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
@@ -152,6 +149,27 @@
             });
             e.Handled = true;
         }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject ancestor = (sender as FrameworkElement)?.Parent;
+            while (ancestor != null)
+            {
+                if (ancestor is UIElement element && element.Focusable)
+                {
+                    element.Focus();
+                    break;
+                }
+
+                ancestor = VisualTreeHelper.GetParent(ancestor);
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = string.Empty;
+            (sender as FrameworkElement).Focus();
+        }
     }
 
     public class IconItem
@@ -160,11 +178,9 @@
         {
             Key = key;
             PathData = pathData;
-            lowerCaseKey = Key.ToLower();
         }
 
         public string Key { get; }
-        public string lowerCaseKey { get; }
         public string PathData { get; }
     }
 }

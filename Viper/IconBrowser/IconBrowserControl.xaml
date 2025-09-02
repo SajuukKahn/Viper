@@ -21,9 +21,15 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <DockPanel>
-            <DockPanel Margin="15,5" DockPanel.Dock="Top">
-                <Grid Margin="0,5,0,0" DockPanel.Dock="Bottom">
+        <DockPanel Background="Transparent" MouseDown="Grid_MouseDown">
+            <DockPanel
+                Margin="15,5"
+                Background="Transparent"
+                DockPanel.Dock="Top">
+                <Grid
+                    Margin="0,5,0,0"
+                    Background="Transparent"
+                    DockPanel.Dock="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -34,6 +40,7 @@
                         Click="Button_Click"
                         Content="SVG Editor"
                         Focusable="False"
+                        IsTabStop="False"
                         Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}"
                         ToolTip="Open the online GitLabs SVG editor in your browser" />
                     <Button
@@ -41,10 +48,15 @@
                         Click="Open_Material_Icon_Website"
                         Content="Material Icons"
                         Focusable="False"
+                        IsTabStop="False"
                         Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}"
                         ToolTip="Open the Material Icons site in your browser" />
                 </Grid>
-                <Grid DockPanel.Dock="Top">
+                <Grid Background="Transparent" DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <TextBox
                         x:Name="SearchBox"
                         Margin="0"
@@ -68,10 +80,61 @@
                         Foreground="{DynamicResource {x:Static vsfx:VsBrushes.GrayTextKey}}"
                         IsHitTestVisible="False"
                         Text="Search ..." />
+
+                    <Button
+                        Grid.Column="1"
+                        Background="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}"
+                        BorderBrush="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}"
+                        Click="Button_Click_1"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        IsTabStop="False"
+                        ToolTip="Clear">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.NewProjectProviderHoverBeginKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowButtonDownActiveGlyphKey}}" />
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Path
+                            Data="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z"
+                            Fill="{DynamicResource {x:Static vsfx:VsBrushes.HelpSearchTextKey}}"
+                            Stretch="Uniform" />
+                    </Button>
                 </Grid>
             </DockPanel>
 
-            <virt:VirtualizingItemsControl x:Name="IconList" Background="Transparent">
+            <virt:VirtualizingItemsControl
+                x:Name="IconList"
+                Background="Transparent"
+                IsTabStop="False">
                 <virt:VirtualizingItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <virt:VirtualizingWrapPanel Margin="3" IsItemsHost="True" />
@@ -86,7 +149,8 @@
                             Click="Copy_Icon_Name"
                             FocusVisualStyle="{x:Null}"
                             Focusable="False"
-                            Foreground="Transparent">
+                            Foreground="Transparent"
+                            IsTabStop="False">
                             <Button.ToolTip>
                                 <TextBlock>
                                     <Run Text="{Binding Key, Mode=OneWay}" />
