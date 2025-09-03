@@ -33,9 +33,12 @@
       <Menus>
           <!-- Toolbar -->
           <Menu guid="guidViperPackageCmdSet" id="ViperToolbar" priority="0x0100" type="Toolbar">
-              <Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLBAR_ADDINS" />
+			  <CommandFlag>DefaultDocked</CommandFlag>
+			  <CommandFlag>TogglePatternAvailable</CommandFlag>
+			  <CommandFlag>NoCustomize</CommandFlag>
               <Strings>
                   <ButtonText>Icon Tools</ButtonText>
+				  <CommandName>Viper Toolbar</CommandName>
               </Strings>
           </Menu>
       </Menus>
@@ -59,12 +62,19 @@
       </Button>-->
           <!-- Toolbar button (launch tool window) -->
           <Button guid="guidViperPackageCmdSet" id="cmdidIconBrowserToolWindowCommand" priority="0x0100" type="Button">
-              <Parent guid="guidViperPackageCmdSet" id="ViperToolbar" />
+              <Parent guid="guidViperPackageCmdSet" id="ViperToolbarGroup" />
+			  <Icon guid="guidImages1" id="bmpPic1"/>
               <Strings>
-                  <ButtonText>Icons</ButtonText>
+                  <ButtonText>Invoke Viper Toolbox Command</ButtonText>
               </Strings>
           </Button>
       </Buttons>
+
+	  <Groups>
+		  <Group guid="guidViperPackageCmdSet" id="ViperToolbarGroup" priority="0x0000">
+			  <Parent guid="guidViperPackageCmdSet" id="ViperToolbar"/>
+		  </Group>
+	  </Groups>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
@@ -85,6 +95,7 @@
     <GuidSymbol name="guidViperPackageCmdSet" value="{c97ce46d-64ca-4050-b57f-38d1dfea6236}">
       <IDSymbol value="257" name="cmdidIconBrowserToolWindowCommand" />
       <IDSymbol name="ViperToolbar" value="0x1000" />
+      <IDSymbol name="ViperToolbarGroup" value="0x1050" />
     </GuidSymbol>
   
     <GuidSymbol value="{0b3f41e8-4cd4-459b-b39b-00992e2bedfb}" name="guidImages1">

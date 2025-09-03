@@ -28,7 +28,7 @@
             InitializeComponent();
 
 #if DEBUG
-            var root = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\repos\PathMasterX\";
+            var root = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\repos\precisionvalve\PathMasterX\";
 #else
             var root = Directory.GetCurrentDirectory();
 #endif
