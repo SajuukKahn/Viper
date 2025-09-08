@@ -115,7 +115,7 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new System.Diagnostics.ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = new Uri(@"https://yqnn.github.io/svg-path-editor/").AbsoluteUri,
                 UseShellExecute = true
@@ -127,22 +127,19 @@
         {
             if (sender is FrameworkElement fe && fe.DataContext is IconItem item)
             {
+                string textToCopy = item.Key;
                 if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
                 {
-                    // Copy PathData if Ctrl is held
-                    Clipboard.SetText(item.PathData);
+                    textToCopy = item.PathData;
                 }
-                else
-                {
-                    // Default: copy the Key
-                    Clipboard.SetText(item.Key);
-                }
+
+                Clipboard.SetText(textToCopy);
             }
         }
 
         private void Open_Material_Icon_Website(object sender, RoutedEventArgs e)
         {
-            Process.Start(new System.Diagnostics.ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = new Uri(@"https://pictogrammers.com/library/mdi/").AbsoluteUri,
                 UseShellExecute = true
@@ -165,10 +162,15 @@
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Open_RandomOrg_Website(object sender, RoutedEventArgs e)
         {
-            SearchBox.Text = string.Empty;
-            (sender as FrameworkElement).Focus();
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = new Uri(@"https://www.random.org/strings/?num=1&len=32&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new").AbsoluteUri,
+                UseShellExecute = true
+            });
+
+            e.Handled = true;
         }
     }
 
