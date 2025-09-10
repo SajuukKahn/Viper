@@ -20,6 +20,9 @@
         private readonly FileSystemWatcher _watcher;
         private readonly string _iconsXamlPath;
         private List<IconItem> _allIcons = new List<IconItem>();
+        private string _subIcon;
+        private string _icon;
+        private string _iconIndex;
 
         private DateTime _lastRead = DateTime.MinValue;
 
@@ -58,6 +61,12 @@
 
             IconList.ItemsSource = _allIcons;
         }
+
+        public string SubIcon { get => _subIcon; set { _subIcon = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
+
+        public string Icon { get => _icon; set { _icon = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
+
+        public string IconIndex { get => _iconIndex; set { _iconIndex = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
 
         private void IconsFile_Changed(object sender, FileSystemEventArgs e)
         {
