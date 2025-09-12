@@ -30,390 +30,372 @@
 
         <local:CaseInsensitiveStringCompareConverter x:Key="StringsAreEqualToTrue" />
         <local:NotNullToVisibleConverter x:Key="NotNullToVisible" />
-
-        <Style x:Key="CompoundIconBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="Transparent" />
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding SubIcon, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="True" />
-                        <Condition Binding="{Binding IconIndex, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="True" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="OpacityMask" Value="{x:Null}" />
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding SubIcon, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="True" />
-                        <Condition Binding="{Binding IconIndex, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="False" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="OpacityMask">
-                        <Setter.Value>
-                            <VisualBrush>
-                                <VisualBrush.Visual>
-                                    <Canvas>
-                                        <Path
-                                            Data="M 0 15 L 3 15 A 12 12 0 0 0 15 3 L 15 0 L 36 0 L 36 36 L 0 36 Z"
-                                            Fill="Black"
-                                            Stretch="Uniform" />
-                                    </Canvas>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Setter.Value>
-                    </Setter>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding SubIcon, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="False" />
-                        <Condition Binding="{Binding IconIndex, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="True" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="OpacityMask">
-                        <Setter.Value>
-                            <VisualBrush>
-                                <VisualBrush.Visual>
-                                    <Canvas>
-                                        <Path
-                                            Data="M 36 19 L 33 19 A 14 14 180 0 0 19 33 L 19 36 L 0 36 L 0 0 L 36 0 Z"
-                                            Fill="Black"
-                                            Stretch="Uniform" />
-                                    </Canvas>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Setter.Value>
-                    </Setter>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding SubIcon, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="False" />
-                        <Condition Binding="{Binding IconIndex, Converter={StaticResource StringsAreEqualToTrue}, ConverterParameter=''}" Value="False" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="OpacityMask">
-                        <Setter.Value>
-                            <VisualBrush>
-                                <VisualBrush.Visual>
-                                    <Canvas>
-                                        <Path
-                                            Data="M 0 15 L 3 15 A 12 12 0 0 0 15 3 L 15 0 L 36 0 L 36 19 L 33 19 A 14 14 180 0 0 19 33 L 19 36 L 0 36 Z"
-                                            Fill="Black"
-                                            Stretch="Uniform" />
-                                    </Canvas>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Setter.Value>
-                    </Setter>
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
-
     </UserControl.Resources>
+
     <Grid>
-        <DockPanel Background="Transparent" MouseDown="Grid_MouseDown">
-            <DockPanel DockPanel.Dock="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid
+            VerticalAlignment="Top"
+            Background="Transparent"
+            DockPanel.Dock="Top"
+            MouseDown="Grid_MouseDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                <DockPanel
-                    Margin="5,0"
-                    Background="Transparent"
-                    DockPanel.Dock="Left">
-                    <WrapPanel
-                        Margin="0,5,0,0"
-                        Background="Transparent"
-                        DockPanel.Dock="Bottom">
-                        <Button
-                            MinWidth="90"
-                            Margin="0,0,2.5,0"
-                            Click="Button_Click"
-                            Content="SVG Editor"
-                            Focusable="False"
-                            IsTabStop="False"
-                            Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}"
-                            ToolTip="Open the online GitLabs SVG editor in your browser" />
-                        <Button
-                            MinWidth="90"
-                            Margin="2.5,0,2.5,0"
-                            Click="Open_Material_Icon_Website"
-                            Content="Material Icons"
-                            Focusable="False"
-                            IsTabStop="False"
-                            Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}"
-                            ToolTip="Open the Material Icons site in your browser" />
-                        <Button
-                            MinWidth="90"
-                            Margin="2.5,0,0,0"
-                            Click="Open_RandomOrg_Website"
-                            Content="Random.org"
-                            Focusable="False"
-                            IsTabStop="False"
-                            Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}"
-                            ToolTip="Get a 32-digit randomized string" />
-                    </WrapPanel>
-                    <Grid Background="Transparent" DockPanel.Dock="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox
-                            x:Name="SearchBox"
-                            Margin="0"
-                            VerticalAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            AcceptsReturn="False"
-                            AcceptsTab="False"
-                            FontSize="16"
-                            GotFocus="SearchBox_GotFocus"
-                            LostFocus="SearchBox_LostFocus"
-                            Style="{DynamicResource {x:Static vsfx:VsResourceKeys.TextBoxStyleKey}}"
-                            TextAlignment="Left"
-                            TextChanged="SearchBox_TextChanged" />
+            <Grid Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
-                        <TextBlock
-                            x:Name="PlaceHolderText"
-                            Margin="5,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Foreground="{DynamicResource {x:Static vsfx:VsBrushes.GrayTextKey}}"
-                            IsHitTestVisible="False"
-                            Text="Search ..." />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="SearchBox"
+                        Margin="0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        AcceptsReturn="False"
+                        AcceptsTab="False"
+                        FontSize="16"
+                        GotFocus="SearchBox_GotFocus"
+                        LostFocus="SearchBox_LostFocus"
+                        Style="{DynamicResource {x:Static vsfx:VsResourceKeys.TextBoxStyleKey}}"
+                        TextAlignment="Left"
+                        TextChanged="SearchBox_TextChanged" />
 
-                        <Button
-                            Grid.Column="1"
-                            Background="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}"
-                            BorderBrush="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}"
-                            Click="Open_RandomOrg_Website"
-                            FocusVisualStyle="{x:Null}"
-                            Focusable="False"
-                            IsTabStop="False"
-                            ToolTip="Clear">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border
-                                                    Padding="{TemplateBinding Padding}"
-                                                    Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}" />
+                    <TextBlock
+                        x:Name="PlaceHolderText"
+                        Margin="5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="{DynamicResource {x:Static vsfx:VsBrushes.GrayTextKey}}"
+                        IsHitTestVisible="False"
+                        Text="Search ..." />
 
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
+                    <Button
+                        Grid.Column="1"
+                        Background="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}"
+                        BorderBrush="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}"
+                        Click="ClearSearchBox"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        IsTabStop="False"
+                        ToolTip="Clear">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}" />
 
-                                            <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.NewProjectProviderHoverBeginKey}}" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowButtonDownActiveGlyphKey}}" />
-                                        </Trigger>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
 
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Path
-                                Data="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z"
-                                Fill="{DynamicResource {x:Static vsfx:VsBrushes.HelpSearchTextKey}}"
-                                Stretch="Uniform" />
-                        </Button>
-                    </Grid>
-                </DockPanel>
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.NewProjectProviderHoverBeginKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowButtonDownActiveGlyphKey}}" />
+                                    </Trigger>
 
-                <Grid
-                    Width="50"
-                    Height="50"
-                    DockPanel.Dock="Right">
-                    <Viewbox>
-                        <Grid
-                            Width="36"
-                            Height="36"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="14" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="14" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="14" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="14" />
-                            </Grid.RowDefinitions>
-                            <Border
-                                Name="mainIconBorder"
-                                Grid.RowSpan="3"
-                                Grid.ColumnSpan="3"
-                                Width="36"
-                                Height="36"
-                                Style="{DynamicResource CompoundIconBorderStyle}">
-                                <Grid>
-                                    <Path
-                                        Margin="6"
-                                        Data="{Binding Icon}"
-                                        Style="{DynamicResource MarkerBrushPathStyle}" />
-
-                                </Grid>
-                            </Border>
-                            <Border
-                                Name="iconIndexBorder"
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                Visibility="{Binding IconIndex, Converter={StaticResource NotNullToVisible}}">
-                                <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
-                                    <TextBlock
-                                        Margin="1"
-                                        Padding="0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding IconIndex}" />
-                                </Viewbox>
-                            </Border>
-                            <Grid Grid.Row="2" Grid.Column="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="90*" />
-                                    <ColumnDefinition Width="5*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="5*" />
-                                    <RowDefinition Height="90*" />
-                                    <RowDefinition Height="5*" />
-                                </Grid.RowDefinitions>
-                                <Border
-                                    Name="subIconBorder"
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Background="Transparent"
-                                    Visibility="{Binding SubIcon, Converter={StaticResource NotNullToVisible}}">
-                                    <Path Data="{Binding SubIcon}" Style="{DynamicResource MarkerBrushPathStyle}" />
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </Viewbox>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Path
+                            Width="16"
+                            Height="16"
+                            Data="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z"
+                            Fill="{DynamicResource {x:Static vsfx:VsBrushes.EditorExpansionLinkKey}}"
+                            Stretch="Uniform" />
+                    </Button>
                 </Grid>
-            </DockPanel>
+                <Grid Grid.Row="1" Margin="0,5">
+                    <ComboBox
+                        Name="dropdownButton"
+                        Width="90"
+                        HorizontalAlignment="Left"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        IsTabStop="False"
+                        ItemContainerStyle="{DynamicResource {x:Static vsfx:VsResourceKeys.ComboBoxItemStyleKey}}"
+                        SelectionChanged="OpenLink"
+                        Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ComboBoxStyleKey}}">
 
-            <virt:VirtualizingItemsControl
-                x:Name="IconList"
-                Background="Transparent"
-                IsTabStop="False">
-                <virt:VirtualizingItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <virt:VirtualizingWrapPanel Margin="3" IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </virt:VirtualizingItemsControl.ItemsPanel>
-                <virt:VirtualizingItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button
-                            Background="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}"
-                            BorderBrush="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}"
-                            BorderThickness="1"
-                            Click="Copy_Icon_Name"
-                            FocusVisualStyle="{x:Null}"
-                            Focusable="False"
-                            Foreground="Transparent"
-                            IsTabStop="False">
-                            <Button.ToolTip>
-                                <TextBlock>
-                                    <Run Text="{Binding Key, Mode=OneWay}" />
-                                    <LineBreak />
-                                    <Run
-                                        FontWeight="Bold"
-                                        Foreground="{DynamicResource {x:Static vsfx:VsBrushes.HelpSearchTextKey}}"
-                                        Text="[Shift + Click]" />
-                                    <Run Text=" to copy Path Data" />
-                                </TextBlock>
-                            </Button.ToolTip>
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border
-                                                    Padding="{TemplateBinding Padding}"
-                                                    Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Panel.ZIndex" Value="0" />
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}" />
-                                    <Setter Property="Width" Value="52" />
-                                    <Setter Property="Height" Value="52" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="3" />
-                                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ThicknessAnimation
-                                                            Storyboard.TargetProperty="Padding"
-                                                            To="1"
-                                                            Duration="0:0:0.01">
-                                                            <ThicknessAnimation.EasingFunction>
-                                                                <SineEase EasingMode="EaseInOut" />
-                                                            </ThicknessAnimation.EasingFunction>
-                                                        </ThicknessAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ThicknessAnimation
-                                                            Storyboard.TargetProperty="Padding"
-                                                            To="5"
-                                                            Duration="0:0:0.75">
-                                                            <ThicknessAnimation.EasingFunction>
-                                                                <SineEase EasingMode="EaseInOut" />
-                                                            </ThicknessAnimation.EasingFunction>
-                                                        </ThicknessAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                            <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.NewProjectProviderHoverBeginKey}}" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
-                                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowButtonDownActiveGlyphKey}}" />
-                                        </Trigger>
+                        <ComboBoxItem Content="SVG Editor" ToolTip="Open the online GitLabs SVG editor in your browser" />
+                        <ComboBoxItem Content="Material Icons" ToolTip="Open the Material Icons site in your browser" />
+                        <ComboBoxItem Content="Random.org" ToolTip="Get a 32-digit randomized string" />
 
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
+                    </ComboBox>
+
+                    <Grid Margin="2" IsHitTestVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Path
+                            Height="15"
+                            Data="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+                            Style="{DynamicResource MarkerBrushPathStyle}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Style="{DynamicResource {x:Static vsfx:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"
+                            Text="Links" />
+
+                    </Grid>
+                </Grid>
+            </Grid>
+
+
+            <Viewbox Grid.Column="2" Margin="0,0,15,0">
+                <Viewbox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="ClearIcon" Header="Clear Main Icon">
+                            <MenuItem.Icon>
+                                <Path
+                                    Width="12"
+                                    Height="12"
+                                    Data="M14,10V14H10V10H14M16,8H8V16H16V8Z"
+                                    Fill="{DynamicResource {x:Static vsfx:VsBrushes.CommandBarMenuIconBackgroundKey}}"
+                                    Stretch="Uniform" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Click="ClearSubIcon" Header="Clear Sub Icon">
+                            <MenuItem.Icon>
+                                <Path
+                                    Width="12"
+                                    Height="12"
+                                    Data="M13 3V11H21V3H13M3 21H11V13H3V21M3 3V11H11V3H3M13 16H16V13H18V16H21V18H18V21H16V18H13V16Z"
+                                    Fill="{DynamicResource {x:Static vsfx:VsBrushes.CommandBarMenuIconBackgroundKey}}"
+                                    Stretch="Uniform" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            x:Name="IconIndexMenuItem"
+                            Click="FlopIconIndexVisibility"
+                            Header="Show Icon Index"
+                            Visibility="{Binding ElementName=IconIndexBorder, Path=IsVisible, Converter={StaticResource NotNullToVisible}}">
+                            <MenuItem.Icon>
+                                <Path
+                                    Width="12"
+                                    Height="12"
+                                    Data="M10,7H14V17H12V9H10V7M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"
+                                    Fill="{DynamicResource {x:Static vsfx:VsBrushes.CommandBarMenuIconBackgroundKey}}"
+                                    Stretch="Uniform" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Viewbox.ContextMenu>
+                <Grid
+                    Width="48"
+                    Height="48"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="14" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="14" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="14" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="14" />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Grid.RowSpan="3"
+                        Grid.ColumnSpan="3"
+                        Width="48"
+                        Height="48">
+                        <Border.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Canvas>
+                                        <Path
+                                            x:Name="MainIconBorderMask"
+                                            Data="M 36 19 L 33 19 A 14 14 180 0 0 19 33 L 19 36 L 0 36 L 0 0 L 36 0 Z"
+                                            Fill="#ff000000"
+                                            Stretch="Uniform" />
+                                    </Canvas>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.OpacityMask>
+                        <Grid>
                             <Path
+                                x:Name="IconPath"
+                                Margin="6"
+                                Style="{DynamicResource MarkerBrushPathStyle}" />
+
+                        </Grid>
+                    </Border>
+                    <Border
+                        x:Name="IconIndexBorder"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                        <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
+                            <TextBlock
+                                x:Name="IconIndexText"
+                                Margin="1"
+                                Padding="0"
                                 HorizontalAlignment="Center"
-                                Data="{Binding PathData}"
-                                Fill="{DynamicResource {x:Static vsfx:VsBrushes.ControlLinkTextPressedKey}}"
-                                IsHitTestVisible="False"
-                                Stretch="Uniform" />
-                        </Button>
-                    </DataTemplate>
-                </virt:VirtualizingItemsControl.ItemTemplate>
-            </virt:VirtualizingItemsControl>
-        </DockPanel>
+                                VerticalAlignment="Center" />
+                        </Viewbox>
+                    </Border>
+                    <Grid Grid.Row="2" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="90*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="90*" />
+                            <RowDefinition Height="5*" />
+                        </Grid.RowDefinitions>
+                        <Border
+                            x:Name="SubIconBorder"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                            <Path x:Name="SubIconPath" Style="{DynamicResource MarkerBrushPathStyle}" />
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Viewbox>
+
+        </Grid>
+
+        <virt:VirtualizingItemsControl
+            x:Name="IconList"
+            Grid.Row="1"
+            Background="Transparent"
+            IsTabStop="False">
+            <virt:VirtualizingItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <virt:VirtualizingWrapPanel Margin="3" IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </virt:VirtualizingItemsControl.ItemsPanel>
+            <virt:VirtualizingItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button
+                        BorderThickness="1"
+                        Click="Copy_Icon_Name"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        IsTabStop="False">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="SetIcon" Header="Set As Main Icon">
+                                    <MenuItem.Icon>
+                                        <Path
+                                            Width="12"
+                                            Height="12"
+                                            Data="M14,10V14H10V10H14M16,8H8V16H16V8Z"
+                                            Fill="{DynamicResource {x:Static vsfx:VsBrushes.CommandBarMenuIconBackgroundKey}}"
+                                            Stretch="Uniform" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Click="SetSubIcon" Header="Set As Sub Icon">
+                                    <MenuItem.Icon>
+                                        <Path
+                                            Width="12"
+                                            Height="12"
+                                            Data="M13 3V11H21V3H13M3 21H11V13H3V21M3 3V11H11V3H3M13 16H16V13H18V16H21V18H18V21H16V18H13V16Z"
+                                            Fill="{DynamicResource {x:Static vsfx:VsBrushes.CommandBarMenuIconBackgroundKey}}"
+                                            Stretch="Uniform" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                        <Button.ToolTip>
+                            <TextBlock>
+                                <Run Text="{Binding Key, Mode=OneWay}" />
+                                <LineBreak />
+                                <Run
+                                    FontWeight="Bold"
+                                    Foreground="{DynamicResource {x:Static vsfx:VsBrushes.HelpSearchTextKey}}"
+                                    Text="[Shift + Click]" />
+                                <Run Text=" to copy Path Data" />
+                            </TextBlock>
+                        </Button.ToolTip>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Panel.ZIndex" Value="0" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonFaceKey}}" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static vsfx:VsBrushes.ClassDesignerTypedefKey}}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.StartPageButtonBorderKey}}" />
+                                <Setter Property="Width" Value="52" />
+                                <Setter Property="Height" Value="52" />
+                                <Setter Property="Padding" Value="5" />
+                                <Setter Property="Margin" Value="3" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonHighlightKey}}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsfx:VsBrushes.BrandedUITitleKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.NewProjectProviderHoverBeginKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsfx:VsBrushes.ButtonShadowKey}}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsfx:VsBrushes.ClassDesignerClassCompartmentKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowButtonDownActiveGlyphKey}}" />
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Path
+                            HorizontalAlignment="Center"
+                            Data="{Binding PathData}"
+                            Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}"
+                            IsHitTestVisible="False"
+                            Stretch="Uniform" />
+                    </Button>
+                </DataTemplate>
+            </virt:VirtualizingItemsControl.ItemTemplate>
+        </virt:VirtualizingItemsControl>
+
     </Grid>
 </UserControl>

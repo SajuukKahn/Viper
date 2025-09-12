@@ -17,7 +17,7 @@
         /// <returns><c>false</c> if <paramref name="value"/> is <c>true</c>; otherwise, <c>true</c>.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null ? Visibility.Collapsed : Visibility.Visible;
+            return value == null || value is bool b && !b ? Visibility.Collapsed : Visibility.Visible;
         }
 
         /// <summary>

@@ -11,6 +11,8 @@
     using System.Windows.Input;
     using Microsoft.VisualStudio.Shell;
     using System.Windows.Media;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Interaction logic for IconBrowserControl.xaml
@@ -20,15 +22,14 @@
         private readonly FileSystemWatcher _watcher;
         private readonly string _iconsXamlPath;
         private List<IconItem> _allIcons = new List<IconItem>();
-        private string _subIcon;
-        private string _icon;
-        private string _iconIndex;
 
         private DateTime _lastRead = DateTime.MinValue;
 
         public IconBrowserControl()
         {
             InitializeComponent();
+            IconIndexBorder.Visibility = Visibility.Collapsed;
+            SubIconBorder.Visibility = Visibility.Collapsed;
 
 #if DEBUG
             var root = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\repos\precisionvalve\PathMasterX\";
@@ -62,12 +63,6 @@
             IconList.ItemsSource = _allIcons;
         }
 
-        public string SubIcon { get => _subIcon; set { _subIcon = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
-
-        public string Icon { get => _icon; set { _icon = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
-
-        public string IconIndex { get => _iconIndex; set { _iconIndex = value; OnPropertyChanged(new DependencyPropertyChangedEventArgs()); } }
-
         private void IconsFile_Changed(object sender, FileSystemEventArgs e)
         {
             var now = DateTime.Now;
@@ -97,7 +92,6 @@
 
         private void LoadIcons()
         {
-
             var doc = XDocument.Load(_iconsXamlPath);
             XNamespace xns = "http://schemas.microsoft.com/winfx/2006/xaml"; // for x:Key
 
@@ -122,16 +116,6 @@
             PlaceHolderText.Visibility = SearchBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = new Uri(@"https://yqnn.github.io/svg-path-editor/").AbsoluteUri,
-                UseShellExecute = true
-            });
-            e.Handled = true;
-        }
-
         private void Copy_Icon_Name(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement fe && fe.DataContext is IconItem item)
@@ -144,16 +128,6 @@
 
                 Clipboard.SetText(textToCopy);
             }
-        }
-
-        private void Open_Material_Icon_Website(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = new Uri(@"https://pictogrammers.com/library/mdi/").AbsoluteUri,
-                UseShellExecute = true
-            });
-            e.Handled = true;
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -171,15 +145,127 @@
             }
         }
 
-        private void Open_RandomOrg_Website(object sender, RoutedEventArgs e)
+        private void SetIcon(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo
+            if (sender is FrameworkElement fwe && fwe.DataContext is IconItem iconItem)
             {
-                FileName = new Uri(@"https://www.random.org/strings/?num=1&len=32&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new").AbsoluteUri,
-                UseShellExecute = true
-            });
+                IconPath.Data = Geometry.Parse(iconItem.PathData);
+                HandleMask();
+            }
+        }
 
-            e.Handled = true;
+        private void ClearIcon(object sender, RoutedEventArgs e)
+        {
+            IconPath.Data = Geometry.Empty;
+            HandleMask();
+        }
+
+        private void SetSubIcon(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement fwe && fwe.DataContext is IconItem iconItem)
+            {
+                SubIconBorder.Visibility = Visibility.Visible;
+                SubIconPath.Data = Geometry.Parse(iconItem.PathData);
+                HandleMask();
+            }
+        }
+
+        private void ClearSubIcon(object sender, RoutedEventArgs e)
+        {
+            SubIconBorder.Visibility = Visibility.Collapsed;
+            SubIconPath.Data = Geometry.Empty;
+            HandleMask();
+        }
+
+        private void FlopIconIndexVisibility(object sender, RoutedEventArgs e)
+        {
+            if (IconIndexBorder.Visibility == Visibility.Visible)
+            {
+                IconIndexBorder.Visibility = Visibility.Collapsed;
+                IconIndexText.Text = string.Empty;
+                IconIndexMenuItem.Header = "Set Icon Index";
+            }
+            else
+            {
+                IconIndexBorder.Visibility = Visibility.Visible;
+                IconIndexText.Text = "1";
+                IconIndexMenuItem.Header = "Clear Icon Index";
+            }
+
+            HandleMask();
+        }
+
+        private void ClearIconIndex(object sender, RoutedEventArgs e)
+        {
+            HandleMask();
+        }
+
+        private void HandleMask()
+        {
+            if (SubIconBorder.Visibility == Visibility.Visible)
+            {
+                if (IconIndexBorder.Visibility == Visibility.Visible)
+                {
+                    MainIconBorderMask.Data = Geometry.Parse("M 0 15 L 3 15 A 12 12 0 0 0 15 3 L 15 0 L 36 0 L 36 19 L 33 19 A 14 14 180 0 0 19 33 L 19 36 L 0 36 Z");
+                    MainIconBorderMask.Fill = Brushes.Black;
+                }
+                else
+                {
+                    MainIconBorderMask.Data = Geometry.Parse("M 36 19 L 33 19 A 14 14 180 0 0 19 33 L 19 36 L 0 36 L 0 0 L 36 0 Z");
+                    MainIconBorderMask.Fill = Brushes.Black;
+                }
+            }
+            else
+            {
+                if (IconIndexBorder.Visibility == Visibility.Visible)
+                {
+                    MainIconBorderMask.Data = Geometry.Parse("M 0 15 L 3 15 A 12 12 0 0 0 15 3 L 15 0 L 36 0 L 36 36 L 0 36 Z");
+                    MainIconBorderMask.Fill = Brushes.Black;
+                }
+                else
+                {
+                    MainIconBorderMask.Data = Geometry.Parse("M0 0H100V100H0V0z");
+                    MainIconBorderMask.Fill = Brushes.White;
+                }
+            }
+        }
+
+        private void ClearSearchBox(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Clear();
+        }
+
+        private void OpenLink(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox)
+            {
+                string targetUri = string.Empty;
+                switch (comboBox.SelectedIndex)
+                {
+                    case -1:
+                        break;
+                    case 0:
+                        targetUri = @"https://yqnn.github.io/svg-path-editor/";
+                        break;
+                    case 1:
+                        targetUri = @"https://pictogrammers.com/library/mdi/";
+                        break;
+                    case 2:
+                        targetUri = @"https://www.random.org/strings/?num=1&len=32&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new";
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(targetUri))
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = new Uri(targetUri).AbsoluteUri,
+                        UseShellExecute = true
+                    });
+
+                    comboBox.SelectedIndex = -1;
+                }
+            }
         }
     }
 
