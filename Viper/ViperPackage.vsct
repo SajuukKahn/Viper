@@ -13,6 +13,23 @@
         it is possible to define includes and macros with the same syntax used
         in C++ files. Using this ability of the compiler here, we include some files
         defining some of the constants that we will use inside the file. -->
+	
+	<!--			Notes
+	
+	How to implement context menu by file type 
+	https://stackoverflow.com/questions/76076746/vsix-context-menu-for-file-type
+	
+	how to get the current solution in a VS extension
+	https://learn.microsoft.com/de-de/dotnet/api/microsoft.visualstudio.shell.interop.svssolution?view=visualstudiosdk-2022
+	
+	ideas to implement:
+	- move the website links out of the icon tool window into a toolbox
+	- change how the icon browser works, should iterate all xaml files for geometry and load that way
+	- add ability to add icons through the UI with a name and geometry data
+	- add new tool window that implements the "localizinator" features
+	- try to figure out the solution wide resource dictionary design time feature in our solution OR implement a new tool window that just has the resource info in there that's searchable (yucky)
+	
+	-->
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
   <Extern href="stdidcmd.h" />
