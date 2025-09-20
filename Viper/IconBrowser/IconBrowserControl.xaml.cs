@@ -13,91 +13,105 @@
     using System.Windows.Media;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Interaction logic for IconBrowserControl.xaml
     /// </summary>
     public partial class IconBrowserControl : UserControl
     {
-        private readonly FileSystemWatcher _watcher;
-        private readonly string _iconsXamlPath;
+        private FileSystemWatcher _watcher;
         private List<IconItem> _allIcons = new List<IconItem>();
+        private string _iconsXamlPath;
 
         private DateTime _lastRead = DateTime.MinValue;
 
+        // https://learn.microsoft.com/en-us/visualstudio/extensibility/vsix/tips/files?view=vs-2022
+        // https://learn.microsoft.com/en-us/visualstudio/extensibility/vsix/tips/solutions?view=vs-2022
         public IconBrowserControl()
         {
             InitializeComponent();
             IconIndexBorder.Visibility = Visibility.Collapsed;
             SubIconBorder.Visibility = Visibility.Collapsed;
 
-#if DEBUG
-            var root = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\repos\precisionvalve\PathMasterX\";
-#else
-            var root = Directory.GetCurrentDirectory();
-#endif
-            var iconsFile = Directory.GetFiles(root, "?cons.xaml", SearchOption.AllDirectories)
-                                     .FirstOrDefault(f => f.EndsWith("icons.xaml", StringComparison.OrdinalIgnoreCase));
-
-            if (iconsFile == null || !File.Exists(iconsFile))
-            {
-                MessageBox.Show("icons.xaml not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            _iconsXamlPath = iconsFile;
-
-            _watcher = new FileSystemWatcher
-            {
-                Path = Path.GetDirectoryName(_iconsXamlPath),
-                Filter = Path.GetFileName(_iconsXamlPath),
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.Attributes
-            };
-
-            _watcher.Changed += IconsFile_Changed;
-            _watcher.EnableRaisingEvents = true;
+            _iconsXamlPath = string.Empty;
 
             // Initial load
-            LoadIcons();
-
-            IconList.ItemsSource = _allIcons;
+            AsyncLoadIcons();
         }
 
         private void IconsFile_Changed(object sender, FileSystemEventArgs e)
         {
-            var now = DateTime.Now;
-            if ((now - _lastRead).TotalMilliseconds < 500)
+            if ((DateTime.Now - _lastRead).TotalMilliseconds < 500)
             {
                 return;
             }
 
-            _lastRead = now;
+            AsyncLoadIcons();
+        }
 
+        private void AsyncLoadIcons()
+        {
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
                 try
                 {
-                    LoadIcons();
-                    SearchBox.Text = string.Empty;
-                    IconList.ItemsSource = _allIcons;
+                    await Task.Run(() =>
+                    {
+
+                        _lastRead = DateTime.Now;
+
+    #if DEBUG
+                        var root = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\repos\precisionvalve\PathMasterX\";
+    #else
+                var root = Directory.GetCurrentDirectory();
+    #endif
+                        var iconsFile = Directory.GetFiles(root, "?cons.xaml", SearchOption.AllDirectories)
+                                                 .FirstOrDefault(f => f.EndsWith("icons.xaml", StringComparison.OrdinalIgnoreCase));
+
+                        if (iconsFile == null || !File.Exists(iconsFile))
+                        {
+                            MessageBox.Show("icons.xaml not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        if (string.IsNullOrEmpty(_iconsXamlPath))
+                        {
+                            _iconsXamlPath = iconsFile;
+
+                            _watcher = new FileSystemWatcher
+                            {
+                                Path = Path.GetDirectoryName(_iconsXamlPath),
+                                Filter = Path.GetFileName(_iconsXamlPath),
+                                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.Attributes
+                            };
+
+                            _watcher.Changed += IconsFile_Changed;
+                            _watcher.EnableRaisingEvents = true;
+                        }
+
+                        var doc = XDocument.Load(_iconsXamlPath);
+                        XNamespace xns = "http://schemas.microsoft.com/winfx/2006/xaml"; // for x:Key
+
+                        _allIcons = new List<IconItem>(doc.Descendants()
+                            .Where(e => e.Attribute(xns + "Key") != null && !string.IsNullOrWhiteSpace(e.Value))
+                            .Select(e => new IconItem(e.Attribute(xns + "Key")?.Value ?? "", e.Value.Trim())));
+                    });
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Error reloading icons: {ex.Message}");
                 }
+
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                SearchBox.Text = string.Empty;
+                IconList.ItemsSource = _allIcons;
             });
         }
 
         private void LoadIcons()
         {
-            var doc = XDocument.Load(_iconsXamlPath);
-            XNamespace xns = "http://schemas.microsoft.com/winfx/2006/xaml"; // for x:Key
 
-            _allIcons = new List<IconItem>(doc.Descendants()
-                .Where(e => e.Attribute(xns + "Key") != null && !string.IsNullOrWhiteSpace(e.Value))
-                .Select(e => new IconItem(e.Attribute(xns + "Key")?.Value ?? "", e.Value.Trim())));
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)

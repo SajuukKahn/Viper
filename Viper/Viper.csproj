@@ -52,6 +52,7 @@
     <Compile Include="IconBrowser\IconBrowserToolWindow.cs" />
     <Compile Include="IconBrowser\IconBrowserToolWindowCommand.cs" />
     <Compile Include="IconBrowser\NotNullToVisibleConverter.cs" />
+    <Compile Include="IconBrowser\SolutionFileCrawler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViperPackage.cs" />
   </ItemGroup>
