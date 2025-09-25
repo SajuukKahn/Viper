@@ -22,6 +22,9 @@
 	how to get the current solution in a VS extension
 	https://learn.microsoft.com/de-de/dotnet/api/microsoft.visualstudio.shell.interop.svssolution?view=visualstudiosdk-2022
 	
+	free translation API online or self-hosted
+	https://github.com/LibreTranslate/LibreTranslate
+	
 	ideas to implement:
 	- move the website links out of the icon tool window into a toolbox
 	- change how the icon browser works, should iterate all xaml files for geometry and load that way
