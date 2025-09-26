@@ -25,6 +25,12 @@
 	free translation API online or self-hosted
 	https://github.com/LibreTranslate/LibreTranslate
 	
+	Regex for unlocalized XAML:
+	\b(?:Text|ToolTip)\s*=\s*"(?!(?:[^"]*#|[^"]*Binding))[^"]*"
+
+	Regex for unlocalized C#:
+	(?<=[\r\n]{1})([^\/\r\n]*".+")
+	
 	ideas to implement:
 	- move the website links out of the icon tool window into a toolbox
 	- change how the icon browser works, should iterate all xaml files for geometry and load that way
