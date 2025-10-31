@@ -40,7 +40,7 @@
 	- add ability to add icons through the UI with a name and geometry data
 	- add new tool window that implements the "localizinator" features
 	- try to figure out the solution wide resource dictionary design time feature in our solution OR implement a new tool window that just has the resource info in there that's searchable (yucky)
-	
+	- Develop Visual Studio extension to do prop like shortcut that auto populates the field and property with the right get/set spacing and SetProperty(ref _var, value)
 	-->
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
