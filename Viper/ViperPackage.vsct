@@ -34,6 +34,10 @@
 	Regex for unlocalized C#:
 	(?<=[\r\n]{1})([^\/\r\n]*".+")
 	
+	Add a button that opens the source output location in file explorer (swap based on build)
+	 - bonus points for having second button that goes to the target module's output in the root output 
+	  - source\repos\precisionvalve\PathMasterX\PathMasterX\bin\x64\Debug\net8.0-windows\Base\Core\Drivers
+	
 	ideas to implement:
 	- move the website links out of the icon tool window into a toolbox
 	- change how the icon browser works, should iterate all xaml files for geometry and load that way
