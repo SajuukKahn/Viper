@@ -1,9 +1,11 @@
 ﻿namespace Viper
 {
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
     using System;
     using System.Runtime.InteropServices;
     using System.Threading;
+    using Viper.IconBrowser;
     using Task = System.Threading.Tasks.Task;
 
     /// <summary>
@@ -52,5 +54,15 @@
         }
 
         #endregion
+
+        public override IVsAsyncToolWindowFactory GetAsyncToolWindowFactory(Guid toolWindowType)
+        {
+            if (toolWindowType == typeof(IconBrowserToolWindow).GUID)
+            {
+                return this;
+            }
+
+            return null;
+        }
     }
 }

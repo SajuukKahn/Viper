@@ -96,7 +96,7 @@
           <!-- Toolbar button (launch tool window) -->
           <Button guid="guidViperPackageCmdSet" id="cmdidIconBrowserToolWindowCommand" priority="0x0100" type="Button">
               <Parent guid="guidViperPackageCmdSet" id="ViperToolbarGroup" />
-			  <Icon guid="guidImages1" id="bmpPic1"/>
+			  <Icon guid="guidImages1" id="bmpPicSearch"/>
               <Strings>
                   <ButtonText>Invoke Viper Toolbox Command</ButtonText>
               </Strings>
