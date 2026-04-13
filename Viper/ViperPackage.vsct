@@ -27,6 +27,9 @@
 	
 	Get a randomized 32-character string in raw TXT response:
 	https://www.random.org/strings/?num=1&len=32&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new
+
+    MIL Documentation online link:
+    https://aurorahelp.zebra.com/aurorail/MILXSP7HelpFiles/MILHelp.htm
 	
 	Regex for unlocalized XAML:
 	\b(?:Text|ToolTip)\s*=\s*"(?!(?:[^"]*#|[^"]*Binding))[^"]*"
